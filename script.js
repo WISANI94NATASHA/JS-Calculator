@@ -202,6 +202,6 @@ function calculate() {
         if(display) {
             console.log('Current display value: ', display.value);
          } else {
-          console.log('Display element not found')
+          console.log('Display element not found');
             }
         })            
