@@ -79,7 +79,7 @@ function appendToDisplay(value) {
         display.value = currentValue + value;
      } else{
         // Get the list number in the display (after last operator)
-        let parts = currentValue.split("/[+\-*/");
+        let parts = currentValue.split("/[+ -*/]");
         let lastnumber = parts[parts.length -1];
 
         // Only add decimal if number doesn't already have one
@@ -91,7 +91,7 @@ function appendToDisplay(value) {
 
  } else if (value === ".'") {
     // Get the last number in the display
-    let lastnumber = currentValue.split("/[+\-*/]").pop();
+    let lastnumber = currentValue.split("/[+ -*/").pop();
     // Only add the  decimal if the current number doesn't have it
     if(lastnumber.includes ('.')) {
         display.value =currentValue +value;
