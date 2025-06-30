@@ -8,9 +8,11 @@ function isOperator(char) {
     return ["+", "-", "*", "/"].includes(char);
 }
 
+
 function getLastChar() {
     return display.value.slice(-1);  
 }
+
 
 function safeval(expression) {
     try {
@@ -20,8 +22,9 @@ function safeval(expression) {
 
         if (!/^[0-9+\-*/.() ]+$/.test(jsExpression) ) {
            throw new Error("Invalid characters in expression");
-        
- }
+
+         }
+
         const result = Function(' "use strict"; return (' + jsExpression + ')')();
 
         if (!isFinite(result)) {
@@ -30,10 +33,11 @@ function safeval(expression) {
         return result;
 
     } catch (error) {
-        console.error('Calcultion error:', error);
+        console.error("Calcultion error:", error);
         return "Error";
     } 
 }
+
 
 function appendToDisplay(value) {
     console.log('Button pressed:', value);
@@ -59,82 +63,75 @@ function appendToDisplay(value) {
             return;  //Do noting     
      }
 
-    //  If the last character is already an operator, replace it
+     //  If the last character is already an operator, replace it
     if (isOperator(getLastChar())) {
         display.value = currentValue.slice(0, -1) + value;
     } else{
         display.value = currentValue + value;
-    } 
+        }
 
- } else if (!isNaN(value)) {
+    } else if (!isNaN(value)) {
 
-    if (currentValue === "0") {
+     if (currentValue === "0") {
         display.value = value; 
     } else {
         display.value =currentValue + value;
-    }
+        }
 
- }  else if (value === ".") {
-     if (currentValue === "0" ) {
-        display.value = currentValue + value;
-     } else{
-        // Get the list number in the display (after last operator)
-        let parts = currentValue.split("/[+ -*/]");
-        let lastnumber = parts[parts.length -1];
+    } else if (value === ".") {
 
-        // Only add decimal if number doesn't already have one
-        if (!lastnumber.includes(".")) {
-            display.value = currentValue + value;
-            
+        if (currentValue === "0") {
+        display.value = currentValue + value;  
+    } else {
+     // Get the last number in the display (after last operator)
+        let parts = currentValue.split("/[+\-*/");
+        let lastNumber = parts[parts.length -1];
+
+     // Only add decimal if number doesn't already have one
+        if (!lastNumber.includes(".")) {
+          display.value = currentValue + value;
         }
      }
-
- } else if (value === ".'") {
-    // Get the last number in the display
-    let lastnumber = currentValue.split("/[+ -*/").pop();
-    // Only add the  decimal if the current number doesn't have it
-    if(lastnumber.includes ('.')) {
-        display.value =currentValue +value;
-    }
-    } else {
+     } else {
         display.value = currentValue + value;
     }
 
-    // Reset the justCalculated flag when user starts typing
+//  Reset the justCalculated flag when user starts typing
     justCalculated = false;
 
-    console.log('Display updated to: ', display.value);
+  console.log('Display updated to: ', display.value);
 }
 
-function clearDisplay() {
-    console.log('Clear button pressed');
 
+function clearDisplay() {
+    console.log('Clear button pressed.');
+    
     display.value = "0";
     justCalculated = false;
 
-    display.style.backgroundImage = "#f0f0f0";
+    display.style.backgroundColor = "#f0f0f0";
     setTimeout(() => {
         display.style.backgroundColor = "";
     }, 150);
 }
 
 
-function deleteLast() {
-    console.log('Backspace button pressed');
+ function deleteLast() {
+    console.log('Backspace button pressed.');
 
     let currentValue = display.value;
 
-    // if there's only one character or it's 0, reset to 0
+ // if there's only one character or it's 0, reset to 0
     if (currentValue.length <= 1 || currentValue === "0") {
         display.value = "0";
     } else {
         display.value = currentValue.slice(0, -1);
     }
-
 }
 
+
 function calculate() {
-        let expression = display.value;
+    let expression = display.value;
 
     // Dont calculate if display is 0 or empty
     if (expression === '0' || expression === "") {
@@ -169,39 +166,42 @@ function calculate() {
         }, 300);
 }
 
-    document.addEventListener('keydown', function (event) {
-      console.log('key pressed', event.key);
 
-      if(event.key >= "0" && event.key <= "9"){
-        appendToDisplay(event.key);
-         }else if(event.key === ".") {
-             appendToDisplay(".");
-         }else if(event.key === "+") {
+    document.addEventListener("keydown", function(event) {
+        console.log("key pressed", event.key);
+
+        if (event.key >= "0" && event.key <= "9") {
+            appendToDisplay(event.key)
+        } else if (event.key === ".") {
+            appendToDisplay(".");
+        } else if (event.key === "+") {
             appendToDisplay("+");
-         }else if(event.key ==="-") {
-             appendToDisplay("-");
-         }else if(event.key === "*") {
+        } else if (event.key === "-") {
+            appendToDisplay("-");
+        } else if (event.key === "*") {
             appendToDisplay("*");
-         }else if(event.key === "/") {
-            event.preventDefault ();
+        } else if (event.key === "/") {
+            event.preventDefault();
             appendToDisplay("/");
-     }
-        else if(event.key === "Enter" || event.key === "=") {
-            calculate();
-        } else if (event.key === "Escape" || event.key === "c" || event.key === "C") {
-            clearDisplay();
-        }else if(event.key === "Backspace") {
-            deleteLast();
-        }
-    })
+        } 
+
+            else if (event.key === 'Enter' || event.key === "=")  {
+                calculate();
+         } else if (event.key === "Escape" || event.key ==="c" || event.key === "C"){
+                clearDisplay();
+          } else if (event.key === 'Backspace') {
+                deleteLast();
+         }
+  })
+
 
      document.addEventListener('DOMContentLoaded', function() {
      console.log('Calculator loaded successfully');
      console.log('Display element' , display);
 
-        if(display) {
+     if(display) {
             console.log('Current display value: ', display.value);
-         } else {
+     } else {
           console.log('Display element not found');
-            }
-        })            
+     }
+ })
