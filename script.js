@@ -14,21 +14,23 @@ function getLastChar() {
 }
 
 
-function safeval(expression) {
+function safeEval(expression) {
     try {
         let jsExpression = expression
         .replace(/x/g, "*")
         .replace(/÷/g, "/");
 
         if (!/^[0-9+\-*/.() ]+$/.test(jsExpression) ) {
-           throw new Error("Invalid characters in expression");
-
+            
+            throw new Error("Invalid characters in expression");
+            
          }
 
         const result = Function(' "use strict"; return (' + jsExpression + ')')();
 
         if (!isFinite(result)) {
             throw new Error("Invalid calculation result");
+            
         }
         return result;
 
@@ -143,7 +145,7 @@ function calculate() {
         return;
     }
 
-    let result = safeval(expression);
+    let result = safeEval(expression);
 
     if (result === "Error") {
         display.value = "Error";
